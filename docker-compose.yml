@@ -11,21 +11,18 @@ services:
       - api
       - client
     restart: always
-    build: 
+    build:
       dockerfile: Dockerfile.dev
       context: ./nginx
     ports:
       - '3050:80'
   api:
-    build: 
+    build:
       dockerfile: Dockerfile.dev
       context: ./server
     volumes:
-    #Dont try to overide or refresh this folder
       - /app/node_modules
-    #Copy everything from ./server to the ./app inside the container = flexibility, we dont have to rebuild the container when we make a change
-      - ./server:/app 
-    #variableName=value [Sets a variable in the container at run time] || variableName [Sets a variable in the container at run time. Value is taken from your computer]
+      - ./server:/app
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
@@ -41,7 +38,7 @@ services:
       context: ./client
     volumes:
       - /app/node_modules
-      - ./client:/app      
+      - ./client:/app
   worker:
     build:
       dockerfile: Dockerfile.dev
@@ -52,4 +49,3 @@ services:
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-
